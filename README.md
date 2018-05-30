@@ -1,0 +1,1 @@
+# spectrum-spring-boot-amq
