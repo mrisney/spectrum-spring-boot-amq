@@ -13,6 +13,12 @@ public class ActiveMQConfig {
 
 	@Value("${activemq.broker-url}")
 	private String brokerUrl;
+	
+	@Value("${activemq.broker-username}")
+	private String username;
+	
+	@Value("${activemq.broker-password}")
+	private String password;
 
 	@Bean
 	public Queue queue() {
@@ -23,6 +29,8 @@ public class ActiveMQConfig {
 	public ActiveMQConnectionFactory connectionFactory() {
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
 		connectionFactory.setBrokerURL(brokerUrl);
+		connectionFactory.setUserName(username);
+		connectionFactory.setPassword(password);
 		return connectionFactory;
 	}
 
