@@ -13,9 +13,8 @@ mvn spring-boot:run
 This will create a fully functioning Application running as a SpringBoot Application
 running locally, there is a url available where the swagger.json is available
 
-http://localhost:8081/api-docs/cxfrs/swagger.json
+http://localhost:8080/v2/api-docs
 
 Batteries included, the Swagger-UI is accesible at
-
-http://localhost:8080/index.html
+http://localhost:8080/swagger-ui.html
 
