@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -30,19 +29,16 @@ public class Application {
 		@Bean
 		public Docket api() {
 			return new Docket(DocumentationType.SWAGGER_2).select()
-					.apis(RequestHandlerSelectors.basePackage("com.spectrum.threescale.poc"))
-					.paths(PathSelectors.any()).build()
-					.apiInfo(apiInfo());
+					.apis(RequestHandlerSelectors.basePackage("com.spectrum.threescale.poc")).paths(PathSelectors.any())
+					.build().apiInfo(apiInfo());
 		}
 
 		private ApiInfo apiInfo() {
-			return new ApiInfo(
-					"Spectrum Health, simple proof of concept service REST API",
+			return new ApiInfo("Spectrum Health, simple proof of concept service REST API",
 					"Simple REST Endpoints, written for demonstration at Spectrum Health, allows user to send and retrieve messages from ActiveMQ Queues.",
-					"1.0.0",
-					"Terms of service",
-					new Contact("Marc Risney", "https://www.redhat.com", "mrisney@redhat.com"),
-					"License of API", "https://opensource.org/licenses/MIT", Collections.emptyList());
+					"1.0.0", "Terms of service",
+					new Contact("Marc Risney", "https://www.redhat.com", "mrisney@redhat.com"), "License of API",
+					"https://opensource.org/licenses/MIT", Collections.emptyList());
 		}
 	}
 }

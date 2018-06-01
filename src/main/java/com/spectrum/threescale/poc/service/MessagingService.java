@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.Queue;
 import javax.jms.QueueBrowser;
 import javax.jms.Session;
@@ -21,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.SessionCallback;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -90,7 +88,7 @@ public class MessagingService {
 
 					Message msg = (Message) enumeration.nextElement();
 					ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
-				
+
 					AdvancedMessageDTO messageDTO = new AdvancedMessageDTO();
 					counter += 1;
 
@@ -103,34 +101,34 @@ public class MessagingService {
 				return counter;
 			}
 		});
-		
 		return advancedMessageDTOs;
 	}
 
 	public int purgeMessages() {
+
 		int messageCount = getMessageCount();
-		
-		jmsTemplate.execute(new SessionCallback<Void>() {
-			@Override
-			public Void doInJms(final Session session) throws JMSException {
-			
-				MessageConsumer consumer = session.createConsumer(queue);
-				try {
-					Message message = null;
-					do {
-						message = consumer.receiveNoWait();
-						if (message != null) {
-							message.acknowledge();
-						}
-					} while (message != null);
-				} finally {
-					consumer.close();
-					session.close();
+
+		jmsTemplate.browse(queue, new BrowserCallback<Integer>() {
+			public Integer doInJms(final Session session, final QueueBrowser browser) throws JMSException {
+				Enumeration<?> enumeration = browser.getEnumeration();
+				while (enumeration.hasMoreElements()) {
+					Message msg = (Message) enumeration.nextElement();
+					ActiveMQTextMessage message = (ActiveMQTextMessage) msg;
+					deleteMessage(message.getJMSMessageID());
 				}
 				return null;
 			}
 		});
+
 		return messageCount;
+	}
+
+	public void deleteMessage(String messageId) {
+		try {
+			jmsTemplate.receiveSelected(queue.getQueueName(), "JMSMessageID='" + messageId + "'");
+		} catch (Exception e) {
+			logger.warn("unable to remove msg {}", messageId);
+		}
 	}
 
 	private int getMessageCount() {
@@ -143,11 +141,11 @@ public class MessagingService {
 			};
 		});
 	}
-	
-	private String convertTime(long time){
-	    Date date = new Date(time);
-	    Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
-	    return format.format(date);
+
+	private String convertTime(long time) {
+		Date date = new Date(time);
+		Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss");
+		return format.format(date);
 	}
 
 }

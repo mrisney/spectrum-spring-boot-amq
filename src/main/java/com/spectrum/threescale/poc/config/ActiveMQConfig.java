@@ -1,6 +1,7 @@
 package com.spectrum.threescale.poc.config;
 
 import javax.jms.Queue;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,10 @@ public class ActiveMQConfig {
 
 	@Value("${activemq.broker-url}")
 	private String brokerUrl;
-	
+
 	@Value("${activemq.broker-username}")
 	private String username;
-	
+
 	@Value("${activemq.broker-password}")
 	private String password;
 

@@ -71,7 +71,23 @@ public class MessageResource {
 	@DeleteMapping("/v1/delete/")
 	@ApiOperation(value = "Delete Messages")
 	public @ResponseBody ResponseEntity<String> deleteMessages() {
+
 		int count = messagingService.purgeMessages();
+
 		return new ResponseEntity<String>(count + " messages deleted", HttpStatus.OK);
 	}
+
+	@DeleteMapping("/v1/delete/{id}")
+	@ApiOperation(value = "Delete Messages")
+	public @ResponseBody ResponseEntity<String> deleteMessage(@PathVariable("id") final String messageId) {
+
+		try {
+			messagingService.deleteMessage(java.net.URLDecoder.decode(messageId, "UTF-8"));
+		} catch (Exception e) {
+			return new ResponseEntity<String>("messages not found", (HttpStatus.NOT_FOUND));
+		}
+
+		return new ResponseEntity<String>("messages deleted", HttpStatus.OK);
+	}
+
 }
