@@ -77,8 +77,8 @@ public class MessageResource {
 		return new ResponseEntity<String>(count + " messages deleted", HttpStatus.OK);
 	}
 
-	@DeleteMapping("/v1/delete/{id}")
-	@ApiOperation(value = "Delete Messages")
+	@DeleteMapping("/v2/delete/{id}")
+	@ApiOperation(value = "Delete Message by Id")
 	public @ResponseBody ResponseEntity<String> deleteMessage(@PathVariable("id") final String messageId) {
 
 		try {
