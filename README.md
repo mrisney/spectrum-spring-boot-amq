@@ -18,6 +18,8 @@ running locally, there is a url available where the swagger.json is available
 
 http://localhost:8080/v2/api-docs
 
-Batteries included, the Swagger-UI is accesible at
+After installation the Swagger-UI will be locally accesible at
 http://localhost:8080/swagger-ui.html
 
+An implementation on OpenShift is available here
+http://s2i-spring-boot-camel-amq-3scale-demo.193b.starter-ca-central-1.openshiftapps.com/swagger-ui.html
